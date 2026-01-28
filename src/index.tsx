@@ -45,17 +45,7 @@
         100% { transform: rotate(360deg); }
       }
     </style>
-<script type="importmap">
-{
-  "imports": {
-    "react": "https://esm.sh/react@^19.2.4",
-    "react-dom/": "https://esm.sh/react-dom@^19.2.4/",
-    "react/": "https://esm.sh/react@^19.2.4/",
-    "firebase/": "https://esm.sh/firebase@^12.8.0/"
-  }
-}
-</script>
-</head>
+  </head>
   <body>
     <div id="root">
       <div id="initial-loader">
