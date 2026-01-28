@@ -1,11 +1,3 @@
-import React from 'react';
-import { AppItem } from '../types';
-
-interface AppCardProps {
-  app: AppItem;
-  onClick: (app: AppItem) => void;
-}
-
 export const AppCard: React.FC<AppCardProps> = ({ app, onClick }) => {
   return (
     <div 
@@ -30,9 +22,7 @@ export const AppCard: React.FC<AppCardProps> = ({ app, onClick }) => {
         {app.description}
       </p>
 
-      
-        </span>
-      </div>
+      {/* Der "VIEW"-Block wurde hier entfernt */}
     </div>
   );
 };
