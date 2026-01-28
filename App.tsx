@@ -76,7 +76,7 @@ const App: React.FC = () => {
         {/* Welcome Header */}
         <div className="mb-8 flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4">
             <div>
-                <h2 className="text-3xl font-extrabold text-slate-900 tracking-tight">AppStartseite</h2>
+                <h2 className="text-3xl font-extrabold text-slate-900 tracking-tight">App Store</h2>
                 <p className="text-slate-500 mt-1">Discover curated web applications.</p>
             </div>
             
