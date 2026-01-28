@@ -77,7 +77,7 @@ const App: React.FC = () => {
         <div className="mb-8 flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4">
             <div>
                 <h2 className="text-3xl font-extrabold text-slate-900 tracking-tight">App Store</h2>
-                <p className="text-slate-500 mt-1">Entdecken Sie ausgewählte Webanwendungen.</p>
+                <p className="text-slate-500 mt-1">Discover curated web applications.</p>
             </div>
             
             {/* Install Button (Only visible if installable) */}
@@ -87,7 +87,7 @@ const App: React.FC = () => {
                     className="bg-slate-900 hover:bg-slate-800 text-white font-medium py-2 px-5 rounded-full shadow-lg transition-transform active:scale-95 flex items-center justify-center self-start sm:self-auto"
                 >
                     <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" /></svg>
-                    Store installieren
+                    Install Store
                 </button>
             )}
         </div>
