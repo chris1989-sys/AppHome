@@ -72,6 +72,11 @@ const App: React.FC = () => {
         <main className="max-w-4xl mx-auto px-4 pt-8">
           {/* Welcome Header */}
           <div className="mb-8 flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4">
+              <div>
+                  <h2 className="text-3xl font-extrabold text-slate-900 tracking-tight">App Store</h2>
+                  <p className="text-slate-500 mt-1">Entdecke kuratierte Webanwendungen.</p>
+              </div>
+              
               {/* Install Button (Only visible if installable) */}
               {(pwaState.isInstallable || pwaState.isIOS) && (
                   <button 
@@ -82,10 +87,6 @@ const App: React.FC = () => {
                       Store installieren
                   </button>
               )}
-              <div>
-                  <h2 className="text-3xl font-extrabold text-slate-900 tracking-tight">App Store</h2>
-                  <p className="text-slate-500 mt-1">Entdecke kuratierte Webanwendungen.</p>
-              </div>
           </div>
 
           {/* Loading State */}
@@ -133,7 +134,7 @@ const App: React.FC = () => {
                   app={app} 
                   onClick={handleAppClick} 
                 />
-              ))}\
+              ))}
             </div>
           )}
         </main>
