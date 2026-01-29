@@ -3,13 +3,13 @@
         "name": "AppHome Store",
         "icons": [
           {
-            "src": "/images/MyAPP.png",
-            "type": "image/png",
+            "src": "/images/MyAPP.jpg",
+            "type": "image/jpeg",
             "sizes": "192x192"
           },
           {
-            "src": "/images/MyAPP.png",
-            "type": "image/png",
+            "src": "/images/MyAPP.jpg",
+            "type": "image/jpeg",
             "sizes": "512x512"
           }
         ],

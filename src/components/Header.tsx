@@ -8,7 +8,7 @@ const Header = () => {
           <h1 className="font-bold text-sm sm:text-xl flex flex-wrap">
             <span className="text-slate-500">App</span>
             <span className="text-slate-700">Store</span>
-            <img src={'/images/MyAPP.png'} alt="App Store Logo" className="h-5 w-5 ml-2" />
+            <img src={'/images/MyAPP.jpg'} alt="App Store Logo" className="h-5 w-5 ml-2" />
           </h1>
         </Link>
 
