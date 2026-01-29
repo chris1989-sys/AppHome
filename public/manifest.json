@@ -1,20 +1,20 @@
-{
-  "short_name": "AppHome",
-  "name": "AppHome Store",
-  "icons": [
-    {
-      "src": "https://my-apphome.vercel.app/images/MyAPP.jpg",
-      "type": "image/jpeg",
-      "sizes": "192x192"
-    },
-    {
-      "src": "https://my-apphome.vercel.app/images/MyAPP.jpg",
-      "type": "image/jpeg",
-      "sizes": "512x512"
-    }
-  ],
-  "start_url": ".",
-  "display": "standalone",
-  "theme_color": "#ffffff",
-  "background_color": "#f8fafc"
-}
+      {
+        "short_name": "AppHome",
+        "name": "AppHome Store",
+        "icons": [
+          {
+            "src": "/images/MyAPP.png",
+            "type": "image/png",
+            "sizes": "192x192"
+          },
+          {
+            "src": "/images/MyAPP.png",
+            "type": "image/png",
+            "sizes": "512x512"
+          }
+        ],
+        "start_url": ".",
+        "display": "standalone",
+        "theme_color": "#ffffff",
+        "background_color": "#f8fafc"
+      }
