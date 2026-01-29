@@ -4,7 +4,7 @@ export interface AppItem {
   description: string;
   iconUrl: string;
   appUrl: string;
-  category: string;
+  categorys: string; // Korrigiert von category
 }
 
 export interface PWAState {

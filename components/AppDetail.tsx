@@ -38,7 +38,6 @@ export const AppDetail: React.FC<AppDetailProps> = ({ app, onBack }) => {
           <img src={app.iconUrl} alt={app.name} className="w-28 h-28 rounded-[1.5rem] shadow-lg object-cover bg-slate-100 flex-shrink-0 border border-slate-100" />
           <div className="flex flex-col justify-center min-w-0 flex-1">
             <h1 className="text-2xl font-bold text-slate-900 leading-tight mb-2">{app.name}</h1>
-            <p className="text-slate-500 font-medium mb-4 text-sm uppercase tracking-wide">{app.developer || 'Unknown Developer'}</p>
             <a href={app.appUrl} target="_blank" rel="noopener noreferrer" className={`hidden md:inline-flex items-center justify-center py-2 px-6 rounded-full font-bold text-sm tracking-wide transition-all shadow-md active:scale-95 w-fit ${isIOS ? 'bg-blue-600 text-white hover:bg-blue-700' : 'bg-green-600 text-white hover:bg-green-700'}`}>
               {isIOS ? 'ÖFFNEN' : 'INSTALLIEREN'}
             </a>
@@ -65,7 +64,7 @@ export const AppDetail: React.FC<AppDetailProps> = ({ app, onBack }) => {
           <InfoBox 
             icon={<svg className="w-6 h-6 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"></path></svg>}
             title="Kategorie"
-            subtitle={app.category}
+            subtitle={app.categorys}
           />
         </div>
         
