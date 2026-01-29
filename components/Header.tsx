@@ -5,8 +5,8 @@ export const Header: React.FC = () => {
     <header className="sticky top-0 z-50 bg-slate-50/90 backdrop-blur-md border-b border-slate-200">
       <div className="max-w-4xl mx-auto px-4 h-16 flex items-center justify-between">
         <div className="flex items-center space-x-2">
-          <h1 className="text-xl font-bold text-slate-900 tracking-tight">App Store</h1>
           <img src="https://my-apphome.vercel.app/images/MyAPP.jpg" alt="App Store Logo" className="w-8 h-8 rounded-lg shadow-sm"/>
+          <h1 className="text-xl font-bold text-slate-900 tracking-tight">My AppHome</h1>
         </div>
         
         {/* User Profile Placeholder (Future Auth) */}
