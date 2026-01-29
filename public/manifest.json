@@ -3,13 +3,13 @@
   "name": "AppHome Store",
   "icons": [
     {
-      "src": "https://picsum.photos/192/192",
-      "type": "image/png",
+      "src": "https://my-apphome.vercel.app/images/MyAPP.jpg",
+      "type": "image/jpeg",
       "sizes": "192x192"
     },
     {
-      "src": "https://picsum.photos/512/512",
-      "type": "image/png",
+      "src": "https://my-apphome.vercel.app/images/MyAPP.jpg",
+      "type": "image/jpeg",
       "sizes": "512x512"
     }
   ],
