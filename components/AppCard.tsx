@@ -30,12 +30,6 @@ export const AppCard: React.FC<AppCardProps> = ({ app, onClick }) => {
         {app.description}
       </p>
 
-      {/* Visual cue that it's clickable, like the 'Get' text in App Store lists */}
-      <div className="mt-auto pt-2 flex justify-end">
-        <span className="bg-slate-100 text-blue-600 text-xs font-bold px-4 py-1.5 rounded-full uppercase">
-          View
-        </span>
-      </div>
     </div>
   );
 };
