@@ -1,4 +1,4 @@
-// Network-First Strategy
+// Simple Cache-First Strategy
 const CACHE_NAME = 'apphome-v1';
 const urlsToCache = [
   '/',
@@ -17,9 +17,14 @@ self.addEventListener('install', event => {
 
 self.addEventListener('fetch', event => {
   event.respondWith(
-    fetch(event.request).catch(() => {
-      return caches.match(event.request);
-    })
+    caches.match(event.request)
+      .then(response => {
+        // Cache hit - return response
+        if (response) {
+          return response;
+        }
+        return fetch(event.request);
+      })
   );
 });
 

@@ -4,7 +4,7 @@ export interface AppItem {
   description: string;
   iconUrl: string;
   appUrl: string;
-  categorys: string[]; // Geändert zu einem Array von Strings
+  category: string;
 }
 
 export interface PWAState {
