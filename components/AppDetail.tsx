@@ -10,7 +10,7 @@ export const AppDetail: React.FC<AppDetailProps> = ({ app, onBack }) => {
   // Plattform-Erkennung
   const isAndroid = /Android/i.test(navigator.userAgent);
   
-  // URL-Logik: googlechrome:// für Android, Standard für Rest
+  // URL-Logik (Hard Force): googlechrome:// für Android, Standard für Rest
   const externalUrl = isAndroid 
     ? `googlechrome://navigate?url=${app.appUrl}` 
     : app.appUrl;
@@ -33,13 +33,19 @@ export const AppDetail: React.FC<AppDetailProps> = ({ app, onBack }) => {
 
       <div className="max-w-2xl mx-auto px-6 pt-8 pb-32">
         <div className="flex space-x-6 mb-10">
-          <img 
-            src={app.iconUrl} 
-            alt={app.name} 
-            className="w-32 h-32 rounded-[2rem] shadow-2xl object-cover bg-slate-50 flex-shrink-0 border border-slate-100" 
-          />
+          <div className="relative flex-shrink-0">
+            <img 
+              src={app.iconUrl} 
+              alt={app.name} 
+              className="w-32 h-32 rounded-[2rem] shadow-2xl object-cover bg-slate-50 border border-slate-100" 
+              onError={(e) => {
+                (e.target as HTMLImageElement).src = `https://ui-avatars.com/api/?name=${encodeURIComponent(app.name)}&background=random&size=256`;
+              }}
+            />
+            <div className="absolute inset-0 bg-blue-500/5 blur-2xl rounded-full -z-10"></div>
+          </div>
           <div className="flex flex-col justify-center min-w-0 flex-1">
-            <h1 className="text-3xl font-extrabold text-slate-900 leading-tight mb-1">{app.name}</h1>
+            <h1 className="text-3xl font-extrabold text-slate-900 leading-tight mb-1 truncate">{app.name}</h1>
             <p className="text-slate-400 font-bold text-sm uppercase tracking-widest mb-6">{app.category}</p>
             
             <a 
@@ -57,14 +63,14 @@ export const AppDetail: React.FC<AppDetailProps> = ({ app, onBack }) => {
 
         <section className="mb-10">
           <h2 className="text-2xl font-bold text-slate-900 mb-4">Infos</h2>
-          <p className="text-slate-600 leading-relaxed whitespace-pre-line text-lg">
+          <p className="text-slate-600 leading-relaxed whitespace-pre-line text-lg font-medium">
             {app.description}
           </p>
         </section>
 
         {/* Info-Tabelle / Grid */}
         <section className="border-t border-slate-100 pt-8">
-            <h3 className="text-xl font-bold text-slate-900 mb-6">Informationen</h3>
+            <h3 className="text-xl font-bold text-slate-900 mb-6 uppercase tracking-wider text-sm opacity-50">Informationen</h3>
             <div className="divide-y divide-slate-50">
                 <div className="py-4 flex justify-between items-center">
                     <span className="text-slate-400 font-medium">Anbieter</span>
@@ -93,7 +99,7 @@ export const AppDetail: React.FC<AppDetailProps> = ({ app, onBack }) => {
             </div>
         </section>
 
-        <div className="fixed bottom-0 left-0 right-0 p-6 bg-gradient-to-t from-white via-white to-transparent md:hidden pb-10">
+        <div className="fixed bottom-0 left-0 right-0 p-6 bg-gradient-to-t from-white via-white to-transparent md:hidden pb-10 z-20">
              <a 
               href={externalUrl}
               target={isAndroid ? undefined : "_blank"}
