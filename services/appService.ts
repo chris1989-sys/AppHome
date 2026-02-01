@@ -20,7 +20,7 @@ export const fetchApps = async (): Promise<AppItem[]> => {
           name: 'TaskFlow',
           description: 'Intelligentes Aufgabenmanagement für moderne Teams. Optimiere deine Workflows mit Leichtigkeit.',
           category: 'Produktivität',
-          iconUrl: 'public/mah.jpg',
+          iconUrl: '/mah.jpg',
           appUrl: 'https://taskflow.io'
         },
         {
@@ -28,7 +28,7 @@ export const fetchApps = async (): Promise<AppItem[]> => {
           name: 'ZenMind',
           description: 'Deine Oase für Meditation und Fokus im digitalen Alltag. Finde deine innere Ruhe.',
           category: 'Wellness',
-          iconUrl: 'public/mah.jpg',
+          iconUrl: '/mah.jpg',
           appUrl: 'https://zenmind.app'
         },
         {
@@ -36,7 +36,7 @@ export const fetchApps = async (): Promise<AppItem[]> => {
           name: 'CodeCraft',
           description: 'Die ultimative Umgebung für Web-Entwicklung im Browser. Coden, wo immer du bist.',
           category: 'Development',
-          iconUrl: 'public/mah.jpg',
+          iconUrl: '/mah.jpg',
           appUrl: 'https://codecraft.dev'
         }
       ];

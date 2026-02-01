@@ -7,7 +7,7 @@ export const Header: React.FC = () => {
         <div className="flex items-center space-x-3">
           <div className="w-9 h-9 relative group">
             <img 
-              src="public/mah.jpg" 
+              src="/mah.jpg" 
               alt="AppHome Logo" 
               className="w-full h-full rounded-xl object-cover shadow-sm border border-slate-200"
             />
