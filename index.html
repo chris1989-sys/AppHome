@@ -11,7 +11,8 @@
     <meta name="apple-mobile-web-app-status-bar-style" content="default">
     <meta name="apple-mobile-web-app-title" content="My AppHome">
     <meta name="description" content="My AppHome - Dein Web App Store" />
-    <link rel="manifest" href="/manifest.json" />
+    <!-- Cache-Busting v=2 erzwingt das Neuladen des Manifests -->
+    <link rel="manifest" href="/manifest.json?v=2" />
     <title>My AppHome</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
