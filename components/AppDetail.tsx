@@ -12,26 +12,22 @@ export const AppDetail: React.FC<AppDetailProps> = ({ app, onBack }) => {
   
   /**
    * Hilfsfunktion zur Generierung der Ziel-URL.
-   * Wir nutzen hier die aggressivste Methode ("Nuclear Option"), um aus dem Webview auszubrechen.
+   * "Main Activity Force" Strategie:
+   * Wir adressieren direkt die Hauptkomponente von Chrome.
    */
   const getLinkUrl = (url: string) => {
     if (isAndroid) {
-      // 1. Protokoll entfernen (z.B. https://) für den Intent-Host
+      // 1. Protokoll entfernen
       const urlWithoutProtocol = url.replace(/^https?:\/\//, '');
       
-      // 2. Fallback-URL sicher encodieren (falls Chrome fehlt)
+      // 2. Fallback encoden
       const fallback = encodeURIComponent(url);
 
-      // 3. Der Intent-String mit allen Flags:
-      // package=com.android.chrome  -> Erzwingt Chrome App
-      // action=...VIEW              -> Standard "Anzeigen" Aktion
-      // category=...BROWSABLE       -> Markiert es als Web-Link
-      // launchFlags=0x10000000      -> (WICHTIG!) FLAG_ACTIVITY_NEW_TASK. Zwingt neues Fenster.
-      // S.browser_fallback_url      -> Sicherheitsnetz für andere Browser
-      return `intent://${urlWithoutProtocol}#Intent;scheme=https;package=com.android.chrome;action=android.intent.action.VIEW;category=android.intent.category.BROWSABLE;launchFlags=0x10000000;S.browser_fallback_url=${fallback};end`;
+      // 3. DER NEUE INTENT STRING (Main Activity Force)
+      // component=com.android.chrome/com.google.android.apps.chrome.Main
+      // -> Das zwingt Android, GENAU das Hauptfenster von Chrome zu nutzen, nicht den Custom Tab Helper.
+      return `intent://${urlWithoutProtocol}#Intent;scheme=https;package=com.android.chrome;component=com.android.chrome/com.google.android.apps.chrome.Main;action=android.intent.action.VIEW;category=android.intent.category.BROWSABLE;launchFlags=0x10000000;S.browser_fallback_url=${fallback};end`;
     }
-    
-    // iOS oder Desktop: Normale URL
     return url;
   };
 
@@ -75,7 +71,7 @@ export const AppDetail: React.FC<AppDetailProps> = ({ app, onBack }) => {
             {app.category}
           </span>
 
-          {/* DESKTOP / TABLET BUTTON (Versteckt auf Mobile) */}
+          {/* DESKTOP / TABLET BUTTON */}
           <div className="hidden md:block w-full max-w-xs">
             <a 
               href={externalUrl}
@@ -95,7 +91,6 @@ export const AppDetail: React.FC<AppDetailProps> = ({ app, onBack }) => {
                 {app.description}
             </p>
             
-            {/* Metadaten (Statisch für Demo) */}
             <div className="mt-8 grid divide-y divide-slate-100 text-sm">
                 <div className="py-4 flex justify-between items-center">
                     <span className="text-slate-400 font-medium">Kompatibilität</span>
@@ -104,14 +99,6 @@ export const AppDetail: React.FC<AppDetailProps> = ({ app, onBack }) => {
                 <div className="py-4 flex justify-between items-center">
                     <span className="text-slate-400 font-medium">Sprachen</span>
                     <span className="text-slate-900 font-semibold">Deutsch, Englisch</span>
-                </div>
-                <div className="py-4 flex justify-between items-center">
-                    <span className="text-slate-400 font-medium">Alter</span>
-                    <span className="text-slate-900 font-semibold">4+</span>
-                </div>
-                <div className="py-4 flex justify-between items-center">
-                    <span className="text-slate-400 font-medium">Urheberrecht</span>
-                    <span className="text-slate-900 font-semibold">© 2025 AppHome Inc.</span>
                 </div>
             </div>
         </section>
