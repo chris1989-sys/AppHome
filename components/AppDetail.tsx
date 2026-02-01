@@ -7,29 +7,13 @@ interface AppDetailProps {
 }
 
 export const AppDetail: React.FC<AppDetailProps> = ({ app, onBack }) => {
+  // Plattform-Erkennung
+  const isAndroid = /Android/i.test(navigator.userAgent);
   
-  const handleOpenExternalApp = (e: React.MouseEvent) => {
-    e.preventDefault();
-    const targetUrl = app.appUrl;
-
-    // Erkennung für Android
-    const isAndroid = /Android/i.test(navigator.userAgent);
-
-    if (isAndroid) {
-      // Intent-Link Konstruktion: Zwingt Android, com.android.chrome zu nutzen
-      const urlWithoutProtocol = targetUrl.replace(/^https?:\/\//, '');
-      const scheme = targetUrl.startsWith('http:') ? 'http' : 'https';
-
-      // Syntax: intent://URL#Intent;scheme=SCHEME;package=com.android.chrome;end
-      const intentUrl = `intent://${urlWithoutProtocol}#Intent;scheme=${scheme};package=com.android.chrome;end`;
-
-      // Den Intent ausführen
-      window.location.href = intentUrl;
-    } else {
-      // Fallback für iOS oder Desktop
-      window.open(targetUrl, '_blank', 'noopener,noreferrer');
-    }
-  };
+  // URL-Logik: googlechrome:// für Android, Standard für Rest
+  const externalUrl = isAndroid 
+    ? `googlechrome://navigate?url=${app.appUrl}` 
+    : app.appUrl;
 
   return (
     <div className="min-h-screen bg-white animate-enter">
@@ -58,12 +42,14 @@ export const AppDetail: React.FC<AppDetailProps> = ({ app, onBack }) => {
             <h1 className="text-3xl font-extrabold text-slate-900 leading-tight mb-1">{app.name}</h1>
             <p className="text-slate-400 font-bold text-sm uppercase tracking-widest mb-6">{app.category}</p>
             
-            <button 
-              onClick={handleOpenExternalApp}
+            <a 
+              href={externalUrl}
+              target={isAndroid ? undefined : "_blank"}
+              rel="noopener noreferrer"
               className="hidden md:inline-flex items-center justify-center py-2.5 px-8 rounded-full bg-blue-600 text-white font-black text-sm tracking-widest transition-all shadow-lg hover:bg-blue-700 active:scale-95 w-fit uppercase"
             >
               Öffnen
-            </button>
+            </a>
           </div>
         </div>
 
@@ -108,12 +94,14 @@ export const AppDetail: React.FC<AppDetailProps> = ({ app, onBack }) => {
         </section>
 
         <div className="fixed bottom-0 left-0 right-0 p-6 bg-gradient-to-t from-white via-white to-transparent md:hidden pb-10">
-             <button 
-              onClick={handleOpenExternalApp}
+             <a 
+              href={externalUrl}
+              target={isAndroid ? undefined : "_blank"}
+              rel="noopener noreferrer"
               className="flex items-center justify-center w-full shadow-2xl py-4 rounded-2xl font-black text-white text-xl bg-blue-600 transition-transform active:scale-95 uppercase tracking-widest"
             >
               App Öffnen
-            </button>
+            </a>
         </div>
       </div>
     </div>
