@@ -3,10 +3,23 @@ import { AppItem } from '../types';
 
 interface AppDetailProps {
   app: AppItem;
+}
+
+interface AppDetailProps {
+  app: AppItem;
   onBack: () => void;
 }
 
 export const AppDetail: React.FC<AppDetailProps> = ({ app, onBack }) => {
+  
+  const handleOpenExternalApp = (e: React.MouseEvent) => {
+    e.preventDefault();
+    // Der Feature-String 'menubar=yes,location=yes' signalisiert dem System, 
+    // dass ein vollständiger Browser-Kontext benötigt wird, was oft Custom Tabs umgeht.
+    const features = 'noopener,noreferrer,menubar=yes,toolbar=yes,location=yes,status=yes,resizable=yes,scrollbars=yes';
+    window.open(app.appUrl, '_blank', features);
+  };
+
   return (
     <div className="min-h-screen bg-white animate-enter">
       <header className="sticky top-0 z-10 bg-white/80 backdrop-blur-xl border-b border-slate-50 transition-all">
@@ -34,14 +47,12 @@ export const AppDetail: React.FC<AppDetailProps> = ({ app, onBack }) => {
             <h1 className="text-3xl font-extrabold text-slate-900 leading-tight mb-1">{app.name}</h1>
             <p className="text-slate-400 font-bold text-sm uppercase tracking-widest mb-6">{app.category}</p>
             
-            <a 
-              href={app.appUrl}
-              target="_blank"
-              rel="noreferrer"
+            <button 
+              onClick={handleOpenExternalApp}
               className="hidden md:inline-flex items-center justify-center py-2.5 px-8 rounded-full bg-blue-600 text-white font-black text-sm tracking-widest transition-all shadow-lg hover:bg-blue-700 active:scale-95 w-fit uppercase"
             >
               Öffnen
-            </a>
+            </button>
           </div>
         </div>
 
@@ -86,14 +97,12 @@ export const AppDetail: React.FC<AppDetailProps> = ({ app, onBack }) => {
         </section>
 
         <div className="fixed bottom-0 left-0 right-0 p-6 bg-gradient-to-t from-white via-white to-transparent md:hidden pb-10">
-             <a 
-              href={app.appUrl}
-              target="_blank"
-              rel="noreferrer"
+             <button 
+              onClick={handleOpenExternalApp}
               className="flex items-center justify-center w-full shadow-2xl py-4 rounded-2xl font-black text-white text-xl bg-blue-600 transition-transform active:scale-95 uppercase tracking-widest"
             >
               App Öffnen
-            </a>
+            </button>
         </div>
       </div>
     </div>
