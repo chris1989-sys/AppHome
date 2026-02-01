@@ -3,10 +3,6 @@ import { AppItem } from '../types';
 
 interface AppDetailProps {
   app: AppItem;
-}
-
-interface AppDetailProps {
-  app: AppItem;
   onBack: () => void;
 }
 
@@ -14,10 +10,25 @@ export const AppDetail: React.FC<AppDetailProps> = ({ app, onBack }) => {
   
   const handleOpenExternalApp = (e: React.MouseEvent) => {
     e.preventDefault();
-    // Der Feature-String 'menubar=yes,location=yes' signalisiert dem System, 
-    // dass ein vollständiger Browser-Kontext benötigt wird, was oft Custom Tabs umgeht.
-    const features = 'noopener,noreferrer,menubar=yes,toolbar=yes,location=yes,status=yes,resizable=yes,scrollbars=yes';
-    window.open(app.appUrl, '_blank', features);
+    const targetUrl = app.appUrl;
+
+    // Erkennung für Android
+    const isAndroid = /Android/i.test(navigator.userAgent);
+
+    if (isAndroid) {
+      // Intent-Link Konstruktion: Zwingt Android, com.android.chrome zu nutzen
+      const urlWithoutProtocol = targetUrl.replace(/^https?:\/\//, '');
+      const scheme = targetUrl.startsWith('http:') ? 'http' : 'https';
+
+      // Syntax: intent://URL#Intent;scheme=SCHEME;package=com.android.chrome;end
+      const intentUrl = `intent://${urlWithoutProtocol}#Intent;scheme=${scheme};package=com.android.chrome;end`;
+
+      // Den Intent ausführen
+      window.location.href = intentUrl;
+    } else {
+      // Fallback für iOS oder Desktop
+      window.open(targetUrl, '_blank', 'noopener,noreferrer');
+    }
   };
 
   return (
