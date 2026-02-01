@@ -6,17 +6,17 @@
       "src": "/mah.jpg",
       "type": "image/jpeg",
       "sizes": "192x192",
-      "purpose": "any"
+      "purpose": "any maskable"
     },
     {
       "src": "/mah.jpg",
       "type": "image/jpeg",
       "sizes": "512x512",
-      "purpose": "any"
+      "purpose": "any maskable"
     }
   ],
   "start_url": "/",
   "display": "standalone",
   "theme_color": "#ffffff",
-  "background_color": "#f8fafc"
+  "background_color": "#ffffff"
 }
