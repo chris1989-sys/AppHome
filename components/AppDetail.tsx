@@ -7,23 +7,24 @@ interface AppDetailProps {
 }
 
 export const AppDetail: React.FC<AppDetailProps> = ({ app, onBack }) => {
-  // Plattform-Erkennung
+  // Plattform-Erkennung für Android
   const isAndroid = /Android/i.test(navigator.userAgent);
   
   /**
-   * Erstellt den Hard-Force Link für Android Chrome
-   * Format: intent://[URL]#Intent;scheme=https;package=com.android.chrome;S.browser_fallback_url=[ENCODED_URL];end
+   * Hilfsfunktion zur Generierung der Ziel-URL.
+   * Erzwingt auf Android den Chrome-Browser über ein striktes Intent-URI-Schema.
    */
-  const getExternalUrl = (url: string) => {
+  const getLinkUrl = (url: string) => {
     if (isAndroid) {
+      // Protokoll entfernen (z.B. https://)
       const urlWithoutProtocol = url.replace(/^https?:\/\//, '');
-      const encodedFullUrl = encodeURIComponent(url);
-      return `intent://${urlWithoutProtocol}#Intent;scheme=https;package=com.android.chrome;S.browser_fallback_url=${encodedFullUrl};end`;
+      // Strenges Intent-Format nach Vorgabe
+      return `intent://${urlWithoutProtocol}#Intent;scheme=https;package=com.android.chrome;end`;
     }
     return url;
   };
 
-  const externalUrl = getExternalUrl(app.appUrl);
+  const externalUrl = getLinkUrl(app.appUrl);
 
   return (
     <div className="min-h-screen bg-white animate-enter">
@@ -58,6 +59,7 @@ export const AppDetail: React.FC<AppDetailProps> = ({ app, onBack }) => {
             <h1 className="text-3xl font-extrabold text-slate-900 leading-tight mb-1 truncate">{app.name}</h1>
             <p className="text-slate-400 font-bold text-sm uppercase tracking-widest mb-6">{app.category}</p>
             
+            {/* Desktop/Tablet Link */}
             <a 
               href={externalUrl}
               target={isAndroid ? undefined : "_blank"}
@@ -78,7 +80,7 @@ export const AppDetail: React.FC<AppDetailProps> = ({ app, onBack }) => {
           </p>
         </section>
 
-        {/* Info-Tabelle / Grid */}
+        {/* Info-Tabelle */}
         <section className="border-t border-slate-100 pt-8">
             <h3 className="text-xl font-bold text-slate-900 mb-6 uppercase tracking-wider text-sm opacity-50">Informationen</h3>
             <div className="divide-y divide-slate-50">
@@ -109,6 +111,7 @@ export const AppDetail: React.FC<AppDetailProps> = ({ app, onBack }) => {
             </div>
         </section>
 
+        {/* Floating Mobile Link */}
         <div className="fixed bottom-0 left-0 right-0 p-6 bg-gradient-to-t from-white via-white to-transparent md:hidden pb-10 z-20">
              <a 
               href={externalUrl}
