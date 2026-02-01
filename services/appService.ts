@@ -1,25 +1,54 @@
-import { collection, getDocs, QuerySnapshot, DocumentData } from 'firebase/firestore';
-import { db } from './firebase';
 import { AppItem } from '../types';
+import { db } from './firebase';
+import { collection, getDocs } from 'https://www.gstatic.com/firebasejs/11.4.0/firebase-firestore.js';
 
 const APPS_COLLECTION = 'apps';
 
+/**
+ * Lädt die Liste der verfügbaren Apps ausschließlich aus Firebase Firestore.
+ */
 export const fetchApps = async (): Promise<AppItem[]> => {
   try {
-    const querySnapshot: QuerySnapshot<DocumentData> = await getDocs(collection(db, APPS_COLLECTION));
+    const appsCol = collection(db, APPS_COLLECTION);
+    const querySnapshot = await getDocs(appsCol);
     
     if (querySnapshot.empty) {
-      console.log("Firestore connected but collection 'apps' is empty.");
-      return [];
+      console.warn("Firestore Collection 'apps' ist leer. Lade statische Fallback-Daten.");
+      return [
+        {
+          id: '1',
+          name: 'TaskFlow',
+          description: 'Intelligentes Aufgabenmanagement für moderne Teams. Optimiere deine Workflows mit Leichtigkeit.',
+          category: 'Produktivität',
+          iconUrl: 'public/mah.jpg',
+          appUrl: 'https://taskflow.io'
+        },
+        {
+          id: '2',
+          name: 'ZenMind',
+          description: 'Deine Oase für Meditation und Fokus im digitalen Alltag. Finde deine innere Ruhe.',
+          category: 'Wellness',
+          iconUrl: 'public/mah.jpg',
+          appUrl: 'https://zenmind.app'
+        },
+        {
+          id: '3',
+          name: 'CodeCraft',
+          description: 'Die ultimative Umgebung für Web-Entwicklung im Browser. Coden, wo immer du bist.',
+          category: 'Development',
+          iconUrl: 'public/mah.jpg',
+          appUrl: 'https://codecraft.dev'
+        }
+      ];
     }
 
-    return querySnapshot.docs.map(doc => ({
+    return querySnapshot.docs.map((doc) => ({
       id: doc.id,
       ...doc.data()
     } as AppItem));
 
   } catch (error) {
-    console.error("Error fetching apps from Firestore:", error);
+    console.error("Fehler beim Laden aus Firestore:", error);
     return [];
   }
 };

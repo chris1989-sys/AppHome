@@ -1,6 +1,9 @@
-import { initializeApp } from 'firebase/app';
-import { getFirestore } from 'firebase/firestore';
+import { initializeApp, getApps, getApp } from 'https://www.gstatic.com/firebasejs/11.4.0/firebase-app.js';
+import { getFirestore } from 'https://www.gstatic.com/firebasejs/11.4.0/firebase-firestore.js';
 
+/**
+ * Firebase Konfiguration für das Projekt.
+ */
 const firebaseConfig = {
   apiKey: "AIzaSyAezbD0KwDYvMXUuxiofqm3XVVUbSClGrE",
   authDomain: "appnest-7b0f0.firebaseapp.com",
@@ -11,6 +14,13 @@ const firebaseConfig = {
   measurementId: "G-1CKP0Z1WEB"
 };
 
-// Initialize Firebase
-const app = initializeApp(firebaseConfig);
+/**
+ * Initialisierung mit direkten gstatic Imports.
+ * Dies ist der sicherste Weg, um ESM in der Browser-Umgebung ohne Bundler zu nutzen.
+ */
+const app = getApps().length === 0 ? initializeApp(firebaseConfig) : getApp();
+
+/**
+ * Exportiere die Firestore-Instanz.
+ */
 export const db = getFirestore(app);

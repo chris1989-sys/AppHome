@@ -10,31 +10,39 @@ export const AppCard: React.FC<AppCardProps> = ({ app, onClick }) => {
   return (
     <div 
       onClick={() => onClick(app)}
-      className="bg-white rounded-3xl p-4 shadow-sm hover:shadow-md transition-all duration-300 border border-slate-100 flex flex-col h-full cursor-pointer active:scale-[0.98]"
+      className="bg-white rounded-[2.5rem] p-6 shadow-sm hover:shadow-2xl transition-all duration-500 border border-slate-100 flex flex-col h-full cursor-pointer active:scale-[0.98] group relative overflow-hidden"
     >
-      <div className="flex items-start space-x-4 mb-3">
-        <img 
-          src={app.iconUrl} 
-          alt={app.name} 
-          className="w-16 h-16 rounded-2xl object-cover shadow-sm bg-slate-100 flex-shrink-0"
-          loading="lazy"
-        />
-        <div className="flex-1 min-w-0 py-1">
-          <h3 className="text-lg font-bold text-slate-900 truncate leading-tight mb-1">{app.name}</h3>
-          <p className="text-xs font-semibold text-slate-400 uppercase tracking-wide">{app.category}</p>
+      <div className="flex items-start space-x-5 mb-6">
+        <div className="relative flex-shrink-0">
+          <img 
+            src={app.iconUrl} 
+            alt={app.name} 
+            className="w-20 h-20 rounded-[1.5rem] object-cover shadow-md bg-slate-100 group-hover:scale-105 transition-transform duration-500 z-10 relative"
+            loading="lazy"
+            onError={(e) => {
+               (e.target as HTMLImageElement).src = `https://ui-avatars.com/api/?name=${encodeURIComponent(app.name)}&background=random&size=128`;
+            }}
+          />
+          <div className="absolute inset-0 bg-blue-500/10 blur-xl rounded-full group-hover:bg-blue-500/20 transition-colors"></div>
+        </div>
+        <div className="flex-1 min-w-0 pt-1">
+          <h3 className="text-xl font-black text-slate-900 truncate leading-tight group-hover:text-blue-600 transition-colors">{app.name}</h3>
+          <p className="text-[11px] font-black text-slate-400 uppercase tracking-widest mt-1.5 bg-slate-50 w-fit px-2 py-0.5 rounded-md">{app.category}</p>
         </div>
       </div>
       
-      {/* Short description preview */}
-      <p className="text-sm text-slate-500 line-clamp-3 mb-2 flex-grow leading-relaxed">
+      <p className="text-slate-500 line-clamp-2 mb-6 flex-grow leading-relaxed font-medium">
         {app.description}
       </p>
 
-      {/* Visual cue that it's clickable, like the 'Get' text in App Store lists */}
-      <div className="mt-auto pt-2 flex justify-end">
-        <span className="bg-slate-100 text-blue-600 text-xs font-bold px-4 py-1.5 rounded-full uppercase">
-          View
-        </span>
+      <div className="mt-auto flex justify-between items-center">
+        <div className="flex -space-x-2">
+            {[1,2,3].map(i => (
+                <div key={i} className="w-6 h-6 rounded-full border-2 border-white bg-slate-200"></div>
+            ))}
+        </div>
+        {/* 'Ansehen' Button entfernt wie angefordert */}
+        <div className="w-2 h-2 rounded-full bg-slate-200 group-hover:bg-blue-400 transition-colors"></div>
       </div>
     </div>
   );

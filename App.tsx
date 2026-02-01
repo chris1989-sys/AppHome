@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useMemo } from 'react';
 import { Header } from './components/Header';
 import { AppCard } from './components/AppCard';
 import { AppDetail } from './components/AppDetail';
@@ -8,39 +8,40 @@ import { AppItem, InstallPromptType } from './types';
 import { usePWA } from './hooks/usePWA';
 
 const App: React.FC = () => {
-  // State
   const [apps, setApps] = useState<AppItem[]>([]);
   const [selectedApp, setSelectedApp] = useState<AppItem | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [searchQuery, setSearchQuery] = useState('');
   
-  // PWA & Modal State
   const [showInstallModal, setShowInstallModal] = useState(false);
   const [installPlatform, setInstallPlatform] = useState<InstallPromptType>(null);
   const { pwaState, promptInstall } = usePWA();
 
-  // Load Data
   useEffect(() => {
     const loadData = async () => {
       setLoading(true);
       setError(null);
       try {
-        console.log("Fetching apps...");
         const data = await fetchApps();
-        console.log("Apps fetched:", data);
         setApps(data);
       } catch (e: any) {
-        console.error("Critical error loading apps:", e);
-        setError(e.message || "Failed to load apps.");
+        setError("Inhalte konnten nicht geladen werden. Bitte versuche es später erneut.");
       } finally {
         setLoading(false);
       }
     };
-
     loadData();
   }, []);
 
-  // Handlers
+  const filteredApps = useMemo(() => {
+    return apps.filter(app => 
+      app.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      app.category.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      app.description.toLowerCase().includes(searchQuery.toLowerCase())
+    );
+  }, [apps, searchQuery]);
+
   const handleInstallClick = () => {
     if (pwaState.isIOS) {
         setInstallPlatform('ios');
@@ -51,106 +52,117 @@ const App: React.FC = () => {
     }
   };
 
-  const handleAndroidInstall = async () => {
-    await promptInstall();
-    setShowInstallModal(false);
-  };
-
   const handleAppClick = (app: AppItem) => {
     setSelectedApp(app);
-    window.scrollTo(0, 0);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
-  // Render: Detail View
   if (selectedApp) {
     return <AppDetail app={selectedApp} onBack={() => setSelectedApp(null)} />;
   }
 
-  // Render: Main View
   return (
-    <div className="min-h-screen bg-slate-50 font-sans text-slate-900 pb-20">
+    <div className="min-h-screen bg-slate-50 font-sans text-slate-900 pb-24">
       <Header />
 
-      <main className="max-w-4xl mx-auto px-4 pt-8">
-        
-        {/* Welcome Header */}
-        <div className="mb-8 flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4">
+      <main className="max-w-5xl mx-auto px-6 pt-12">
+        <div className="mb-12 flex flex-col md:flex-row md:items-center justify-between gap-8">
             <div className="flex-1">
-                <h2 className="text-3xl font-extrabold text-slate-900 tracking-tight">App Store</h2>
+                <h2 className="text-5xl font-black text-slate-900 tracking-tight mb-3">Entdecken</h2>
+                <p className="text-slate-500 text-xl font-medium max-w-lg">Hochwertige Web-Applikationen, kuratiert von unserer KI für deine Produktivität.</p>
                 
-                {/* Mobile Install Button: Directly under the name */}
+                {/* Install Button for Mobile */}
                 {(pwaState.isInstallable || pwaState.isIOS) && (
                     <button 
                         onClick={handleInstallClick}
-                        className="sm:hidden mt-3 bg-slate-900 hover:bg-slate-800 text-white font-medium py-2 px-5 rounded-full shadow-lg transition-transform active:scale-95 flex items-center justify-center"
+                        className="md:hidden mt-6 w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-4 px-6 rounded-2xl shadow-xl transition-all active:scale-95 flex items-center justify-center"
                     >
-                        <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" /></svg>
-                        Install Store
+                        <svg className="w-6 h-6 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" /></svg>
+                        Store installieren
                     </button>
                 )}
-
-                <p className="text-slate-500 mt-1">Discover curated web applications.</p>
             </div>
-            
-            {/* Desktop Install Button: Positioned on the right */}
-            {(pwaState.isInstallable || pwaState.isIOS) && (
-                <button 
-                    onClick={handleInstallClick}
-                    className="hidden sm:flex bg-slate-900 hover:bg-slate-800 text-white font-medium py-2 px-5 rounded-full shadow-lg transition-transform active:scale-95 items-center justify-center self-end"
-                >
-                    <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" /></svg>
-                    Install Store
-                </button>
-            )}
+
+            <div className="flex flex-col gap-4 w-full md:w-80">
+                <div className="relative">
+                    <input 
+                      type="text"
+                      placeholder="Apps durchsuchen..."
+                      className="w-full pl-12 pr-4 py-4 bg-white border border-slate-200 rounded-2xl shadow-sm focus:ring-4 focus:ring-blue-100 focus:border-blue-400 transition-all outline-none font-medium"
+                      value={searchQuery}
+                      onChange={(e) => setSearchQuery(e.target.value)}
+                    />
+                    <svg className="w-6 h-6 text-slate-400 absolute left-4 top-1/2 -translate-y-1/2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                    </svg>
+                </div>
+                
+                {/* Desktop Install Button */}
+                {(pwaState.isInstallable || pwaState.isIOS) && (
+                    <button 
+                        onClick={handleInstallClick}
+                        className="hidden md:flex bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-8 rounded-full shadow-lg transition-all hover:shadow-blue-200 active:scale-95 items-center justify-center whitespace-nowrap"
+                    >
+                        <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" /></svg>
+                        Store installieren
+                    </button>
+                )}
+            </div>
         </div>
 
-        {/* Loading State */}
-        {loading && (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-             {[1, 2, 3].map((i) => (
-               <div key={i} className="bg-white rounded-3xl p-4 h-32 animate-pulse border border-slate-100 flex items-center space-x-4">
-                  <div className="w-16 h-16 bg-slate-200 rounded-2xl"></div>
-                  <div className="flex-1 space-y-2">
-                     <div className="h-4 bg-slate-200 rounded w-3/4"></div>
-                     <div className="h-3 bg-slate-200 rounded w-1/2"></div>
+        {error && (
+            <div className="bg-red-50 border border-red-100 p-6 rounded-3xl text-red-600 font-bold flex items-center mb-8">
+                <svg className="w-6 h-6 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" /></svg>
+                {error}
+            </div>
+        )}
+
+        {loading ? (
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+             {[1, 2, 3, 4, 5, 6].map((i) => (
+               <div key={i} className="bg-white rounded-[2rem] p-8 h-56 animate-pulse border border-slate-100 shadow-sm">
+                  <div className="flex items-center space-x-5">
+                    <div className="w-20 h-20 bg-slate-100 rounded-[1.5rem]"></div>
+                    <div className="flex-1 space-y-3">
+                       <div className="h-6 bg-slate-100 rounded w-3/4"></div>
+                       <div className="h-4 bg-slate-100 rounded w-1/2"></div>
+                    </div>
+                  </div>
+                  <div className="mt-6 space-y-2">
+                      <div className="h-4 bg-slate-100 rounded w-full"></div>
+                      <div className="h-4 bg-slate-100 rounded w-5/6"></div>
                   </div>
                </div>
              ))}
           </div>
-        )}
-
-        {/* Error State */}
-        {!loading && error && (
-            <div className="p-6 bg-red-50 text-red-600 rounded-2xl border border-red-100 text-center">
-                <p className="font-bold">Error loading content</p>
-                <p className="text-sm mt-1">{error}</p>
-            </div>
-        )}
-
-        {/* Empty State */}
-        {!loading && !error && apps.length === 0 && (
-            <div className="text-center py-20 bg-white rounded-3xl border border-slate-100 shadow-sm">
-                <div className="w-16 h-16 bg-slate-100 rounded-full flex items-center justify-center mx-auto mb-4 text-slate-400">
-                    <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" /></svg>
+        ) : (
+          <>
+            {filteredApps.length > 0 ? (
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 animate-enter">
+                  {filteredApps.map((app) => (
+                    <AppCard 
+                      key={app.id} 
+                      app={app} 
+                      onClick={handleAppClick} 
+                    />
+                  ))}
                 </div>
-                <h3 className="text-lg font-bold text-slate-900">No Apps Found</h3>
-                <p className="text-slate-500 mt-2 max-w-xs mx-auto">
-                    Your Firestore collection "apps" is empty. Add a document in the Firebase Console to see it here.
-                </p>
-            </div>
-        )}
-
-        {/* Content Grid */}
-        {!loading && !error && apps.length > 0 && (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            {apps.map((app) => (
-              <AppCard 
-                key={app.id} 
-                app={app} 
-                onClick={handleAppClick} 
-              />
-            ))}
-          </div>
+            ) : (
+                <div className="text-center py-24 bg-white rounded-[3rem] border border-slate-100">
+                    <div className="w-24 h-24 bg-slate-50 rounded-full flex items-center justify-center mx-auto mb-6 text-slate-300">
+                        <svg className="w-12 h-12" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" /></svg>
+                    </div>
+                    <h3 className="text-2xl font-bold text-slate-900 mb-2">Keine Apps gefunden</h3>
+                    <p className="text-slate-500">Versuche es mit einem anderen Suchbegriff.</p>
+                    <button 
+                        onClick={() => setSearchQuery('')}
+                        className="mt-6 text-blue-600 font-bold hover:underline"
+                    >
+                        Suche zurücksetzen
+                    </button>
+                </div>
+            )}
+          </>
         )}
       </main>
 
@@ -158,7 +170,7 @@ const App: React.FC = () => {
         isOpen={showInstallModal}
         onClose={() => setShowInstallModal(false)}
         platform={installPlatform}
-        onAndroidInstall={handleAndroidInstall}
+        onAndroidInstall={promptInstall}
       />
     </div>
   );

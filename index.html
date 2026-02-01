@@ -1,35 +1,40 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="de">
   <head>
     <meta charset="utf-8" />
-    <link rel="icon" href="https://picsum.photos/64" />
+    <link rel="icon" href="public/mah.jpg" />
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0" />
     <meta name="theme-color" content="#ffffff" />
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <meta name="description" content="AppHome - Your Web App Store" />
-    <link rel="manifest" href="/manifest.json" />
+    <meta name="description" content="AppHome - Dein Web App Store" />
+    <link rel="manifest" href="public/manifest.json" />
     <title>AppHome</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
+      @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');
+
       body {
         -webkit-tap-highlight-color: transparent;
-        -webkit-touch-callout: none;
-        background-color: #f8fafc;
-        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        background-color: #f1f5f9;
+        font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
       }
       
-      /* Animation classes */
+      .glass {
+        background: rgba(255, 255, 255, 0.7);
+        backdrop-filter: blur(20px);
+        -webkit-backdrop-filter: blur(20px);
+      }
+
       .animate-enter {
-        animation: enterAnimation 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        animation: enter 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
       }
 
-      @keyframes enterAnimation {
-        0% { opacity: 0; transform: translateY(20px); }
-        100% { opacity: 1; transform: translateY(0); }
+      @keyframes enter {
+        0% { opacity: 0; transform: translateY(20px) scale(0.98); }
+        100% { opacity: 1; transform: translateY(0) scale(1); }
       }
 
-      /* Simple loading spinner for initial load */
       #initial-loader {
         display: flex;
         justify-content: center;
@@ -37,54 +42,58 @@
         height: 100vh;
         width: 100vw;
         position: fixed;
-        top: 0;
-        left: 0;
+        background-color: #f1f5f9;
         z-index: 9999;
-        background-color: #f8fafc;
       }
       .spinner {
         width: 40px;
         height: 40px;
-        border: 4px solid #e2e8f0;
-        border-top: 4px solid #3b82f6;
+        border: 3px solid rgba(37, 99, 235, 0.1);
+        border-top: 3px solid #2563eb;
         border-radius: 50%;
-        animation: spin 1s linear infinite;
+        animation: spin 0.6s cubic-bezier(0.5, 0.1, 0.5, 0.9) infinite;
       }
       @keyframes spin {
         0% { transform: rotate(0deg); }
         100% { transform: rotate(360deg); }
       }
+
+      ::-webkit-scrollbar {
+        width: 8px;
+      }
+      ::-webkit-scrollbar-track {
+        background: transparent;
+      }
+      ::-webkit-scrollbar-thumb {
+        background: #cbd5e1;
+        border-radius: 10px;
+      }
+      ::-webkit-scrollbar-thumb:hover {
+        background: #94a3b8;
+      }
     </style>
     
-    <!-- CRITICAL FIX: Clean Import Map without conflicting versions -->
     <script type="importmap">
 {
   "imports": {
     "react": "https://esm.sh/react@18.3.1",
+    "react-dom": "https://esm.sh/react-dom@18.3.1",
     "react-dom/client": "https://esm.sh/react-dom@18.3.1/client",
     "react/jsx-runtime": "https://esm.sh/react@18.3.1/jsx-runtime",
-    "firebase/app": "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js",
-    "firebase/firestore": "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js",
-    "react-dom/": "https://esm.sh/react-dom@^19.2.4/",
+    "@google/genai": "https://esm.sh/@google/genai@1.0.1",
     "react/": "https://esm.sh/react@^19.2.4/",
-    "firebase/": "https://esm.sh/firebase@^12.8.0/"
+    "react-dom/": "https://esm.sh/react-dom@^19.2.4/"
   }
 }
 </script>
 <link rel="stylesheet" href="/index.css">
 </head>
   <body>
-    <noscript>You need to enable JavaScript to run this app.</noscript>
-    
-    <!-- Initial Loading State (removed by React once loaded) -->
     <div id="root">
       <div id="initial-loader">
         <div class="spinner"></div>
       </div>
     </div>
-
-    <!-- Entry point for the application -->
-    <script type="module" src="./index.tsx"></script>
   <script type="module" src="/index.tsx"></script>
 </body>
 </html>
