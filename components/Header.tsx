@@ -13,7 +13,7 @@ export const Header: React.FC = () => {
             />
             <div className="absolute inset-0 rounded-xl bg-blue-500/0 group-hover:bg-blue-500/5 transition-colors"></div>
           </div>
-          <h1 className="text-xl font-bold text-slate-900 tracking-tight">AppHome</h1>
+          <h1 className="text-xl font-bold text-slate-900 tracking-tight">My AppHome</h1>
         </div>
         
         {/* User Profile Placeholder (Future Auth) */}
