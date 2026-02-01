@@ -2,9 +2,6 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import App from './App';
 
-// Hinweis: Service-Worker-Bereinigung wurde entfernt, da navigator.serviceWorker 
-// in dieser Sandbox-Umgebung oft einen 'Invalid State' Fehler wirft.
-
 const rootElement = document.getElementById('root');
 
 if (rootElement) {
@@ -16,7 +13,15 @@ if (rootElement) {
     </React.StrictMode>
   );
 
-  // Loader sicher entfernen
+  // Service Worker Registrierung (Kritisch für PWA-Icon Support)
+  if ('serviceWorker' in navigator) {
+    window.addEventListener('load', () => {
+      navigator.serviceWorker.register('/sw.js').catch(err => {
+        console.log('ServiceWorker registration failed: ', err);
+      });
+    });
+  }
+
   const hideLoader = () => {
     const loader = document.getElementById('initial-loader');
     if (loader) {
@@ -31,6 +36,5 @@ if (rootElement) {
     window.addEventListener('load', hideLoader);
   }
   
-  // Backup-Entfernung des Loaders
   setTimeout(hideLoader, 1500);
 }
