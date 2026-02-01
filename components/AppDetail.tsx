@@ -37,7 +37,7 @@ export const AppDetail: React.FC<AppDetailProps> = ({ app, onBack }) => {
             <a 
               href={app.appUrl}
               target="_blank"
-              rel="noopener noreferrer"
+              rel="external noopener noreferrer"
               className="hidden md:inline-flex items-center justify-center py-2.5 px-8 rounded-full bg-blue-600 text-white font-black text-sm tracking-widest transition-all shadow-lg hover:bg-blue-700 active:scale-95 w-fit uppercase"
             >
               Öffnen
@@ -89,7 +89,7 @@ export const AppDetail: React.FC<AppDetailProps> = ({ app, onBack }) => {
              <a 
               href={app.appUrl}
               target="_blank"
-              rel="noopener noreferrer"
+              rel="external noopener noreferrer"
               className="flex items-center justify-center w-full shadow-2xl py-4 rounded-2xl font-black text-white text-xl bg-blue-600 transition-transform active:scale-95 uppercase tracking-widest"
             >
               App Öffnen
