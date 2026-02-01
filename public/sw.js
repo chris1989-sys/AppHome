@@ -1,5 +1,4 @@
-const CACHE_NAME = 'apphome-v2';
-
+// Minimaler Service Worker für PWA-Support
 self.addEventListener('install', (event) => {
   self.skipWaiting();
 });
@@ -8,11 +7,7 @@ self.addEventListener('activate', (event) => {
   event.waitUntil(self.clients.claim());
 });
 
+// Ein gültiger Fetch-Handler ist zwingend für das App-Icon
 self.addEventListener('fetch', (event) => {
-  // Standard-Strategie: Netzwerk zuerst
-  event.respondWith(
-    fetch(event.request).catch(() => {
-      return caches.match(event.request);
-    })
-  );
+  event.respondWith(fetch(event.request));
 });

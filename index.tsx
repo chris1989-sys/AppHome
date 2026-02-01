@@ -13,12 +13,12 @@ if (rootElement) {
     </React.StrictMode>
   );
 
-  // Service Worker Registrierung ohne Pfad-Fehler
+  // Service Worker Registrierung (Kritisch für PWA-Icon Support)
   if ('serviceWorker' in navigator) {
     window.addEventListener('load', () => {
-      navigator.serviceWorker.register('/sw.js')
-        .then(reg => console.log('SW registered'))
-        .catch(err => console.log('SW registration failed: ', err));
+      navigator.serviceWorker.register('/sw.js').catch(err => {
+        console.log('ServiceWorker registration failed: ', err);
+      });
     });
   }
 
