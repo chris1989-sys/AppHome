@@ -10,10 +10,20 @@ export const AppDetail: React.FC<AppDetailProps> = ({ app, onBack }) => {
   // Plattform-Erkennung
   const isAndroid = /Android/i.test(navigator.userAgent);
   
-  // URL-Logik (Hard Force): googlechrome:// für Android, Standard für Rest
-  const externalUrl = isAndroid 
-    ? `googlechrome://navigate?url=${app.appUrl}` 
-    : app.appUrl;
+  /**
+   * Erstellt den Hard-Force Link für Android Chrome
+   * Format: intent://[URL]#Intent;scheme=https;package=com.android.chrome;S.browser_fallback_url=[ENCODED_URL];end
+   */
+  const getExternalUrl = (url: string) => {
+    if (isAndroid) {
+      const urlWithoutProtocol = url.replace(/^https?:\/\//, '');
+      const encodedFullUrl = encodeURIComponent(url);
+      return `intent://${urlWithoutProtocol}#Intent;scheme=https;package=com.android.chrome;S.browser_fallback_url=${encodedFullUrl};end`;
+    }
+    return url;
+  };
+
+  const externalUrl = getExternalUrl(app.appUrl);
 
   return (
     <div className="min-h-screen bg-white animate-enter">
