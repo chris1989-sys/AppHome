@@ -3,6 +3,7 @@ import { Header } from './components/Header';
 import { AppCard } from './components/AppCard';
 import { AppDetail } from './components/AppDetail';
 import { InstallPrompt } from './components/InstallPrompt';
+import { InfoModal } from './components/InfoModal';
 import { fetchApps } from './services/appService';
 import { AppItem, InstallPromptType } from './types';
 import { usePWA } from './hooks/usePWA';
@@ -15,6 +16,7 @@ const App: React.FC = () => {
   const [searchQuery, setSearchQuery] = useState('');
   
   const [showInstallModal, setShowInstallModal] = useState(false);
+  const [showInfoModal, setShowInfoModal] = useState(false);
   const [installPlatform, setInstallPlatform] = useState<InstallPromptType>(null);
   const { pwaState, promptInstall } = usePWA();
 
@@ -63,7 +65,7 @@ const App: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-slate-50 font-sans text-slate-900 pb-24">
-      <Header />
+      <Header onInfoClick={() => setShowInfoModal(true)} />
 
       <main className="max-w-5xl mx-auto px-6 pt-12">
         <div className="mb-12 flex flex-col md:flex-row md:items-center justify-between gap-8">
@@ -171,6 +173,11 @@ const App: React.FC = () => {
         onClose={() => setShowInstallModal(false)}
         platform={installPlatform}
         onAndroidInstall={promptInstall}
+      />
+
+      <InfoModal 
+        isOpen={showInfoModal}
+        onClose={() => setShowInfoModal(false)}
       />
     </div>
   );
